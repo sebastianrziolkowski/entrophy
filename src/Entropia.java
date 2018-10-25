@@ -3,6 +3,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -10,6 +11,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 
@@ -20,7 +22,10 @@ import java.io.FileReader;
 public class Entropia extends Application {
 
     private Text actionStatus;
+    private Text resultText;
     private Stage savedStage;
+    public String fileName;
+    private TextField textEdytor;
 
     public static void main(String[] args) {
 
@@ -33,51 +38,34 @@ public class Entropia extends Application {
         }
 
 
-        String fileName = args[0];
+       // fileName = args[0];
 
-        System.out.println("Wczytano plik " + fileName);
-
-
-        try {
-
-            BufferedReader bufor = new BufferedReader(new FileReader(fileName));
+       // System.out.println("Wczytano plik " + fileName);
 
 
-            int kodZnaku;
-
-            while (bufor.ready()) {
-
-                kodZnaku = bufor.read();
-
-                System.out.println(kodZnaku + "\t" + (char) kodZnaku);
-
-
-            }
-
-        } catch (Exception ex) {
-
-            System.out.println("Bład przekazywania tekstu!" + ex);
-
-        }
 
 
     }
 
     public void start(Stage primaryStage) {
         Button open = new Button("open");
-        open.setOnAction(new SingleFcButtonListener());
-        HBox open1 = new HBox(10);
-        open1.getChildren().addAll(open);
         Button load = new Button("load");
-        HBox load1 = new HBox(10);
-        load1.getChildren().addAll(load);
+        textEdytor = new TextField();
+        textEdytor.setMinSize(500,25);
+
+        open.setOnAction(new SingleFcButtonListener());
+
+        HBox textBox = new HBox(10);
+        HBox buttonBox = new HBox(10);
+        buttonBox.getChildren().addAll(open,load);
+        textBox.getChildren().addAll(textEdytor);
 
         actionStatus = new Text();
-
+        resultText = new Text("Result:");
 
 
         VBox vbox = new VBox(30);
-        vbox.getChildren().addAll( open1,load1,  actionStatus);
+        vbox.getChildren().addAll( buttonBox, textBox,  actionStatus, resultText);
         Scene scene = new Scene(vbox, 500, 300);
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -99,9 +87,17 @@ public class Entropia extends Application {
         File selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile != null) {
-
-            actionStatus.setText("File selected: " + selectedFile.getName());
+            fileName=selectedFile.getPath();
+            actionStatus.setText("File selected: " + fileName );
+            try {
+                BufferedReader bufor = new BufferedReader(new FileReader(fileName));
+                textEdytor.setText(bufor.readLine());
+            } catch (Exception e) {
+                System.out.println("Error file load" + e.toString());
+            }
         }
+
+
 
     }
 
