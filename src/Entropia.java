@@ -1,12 +1,8 @@
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -18,7 +14,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 
@@ -43,11 +38,12 @@ public class Entropia extends Application {
             }
         }
 
-    ScrollPane scrollPane = new ScrollPane();
-    ArrayList<charElement> charArrayList = new ArrayList<charElement>();
+    private ScrollPane scrollPane = new ScrollPane();
+    private ArrayList<charElement> charArrayList = new ArrayList<charElement>();
     private Text resultText = new Text("Result:");
     private Text actionStatus;
     private TextField textField;
+    private int lettersNumber =0;
 
     public static void main(String[] args) {
 
@@ -62,8 +58,8 @@ public class Entropia extends Application {
     }
 
     public void start(Stage primaryStage) {
-        Button open = new Button("open");
-        Button load = new Button("load");
+        Button open = new Button("Open");
+        Button load = new Button("Analyze");
         textField = new TextField();
         textField.setText("Type here!");
         textField.setMinSize(500,25);
@@ -81,7 +77,7 @@ public class Entropia extends Application {
 
         VBox vbox = new VBox(30);
         vbox.getChildren().addAll( buttonBox, textBox,  actionStatus,  scrollPane);
-        Scene scene = new Scene(vbox, 545, 300);
+        Scene scene = new Scene(vbox, 545, 310);
         primaryStage.setTitle("Entropy calculator");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -128,9 +124,10 @@ public class Entropia extends Application {
             try {
                 BufferedReader bufor = new BufferedReader(new FileReader(fileName));
 
+                textField.setText("");
                 while(bufor.ready())
                 {
-                    textField.setText(textField.getText() + bufor.readLine());
+                    textField.setText(textField.getText() + "\t" + bufor.readLine());
                 }
             } catch (Exception e) {
                 System.out.println("Error file load" + e.toString());
@@ -141,18 +138,33 @@ public class Entropia extends Application {
 
     }
 
+    private static double log2(double n) {
+        return Math.log(n) / Math.log(2);
+    }
+
+    private double calcEntropy()
+    {
+        double entropy = 0;
+        for(charElement aCharArrayList : charArrayList)
+        {
+            double prob = (double)aCharArrayList.value / lettersNumber;
+            entropy -= prob * log2(prob);
+        }
+
+        return entropy;
+    }
 
     private void showResult()
     {
-        //resultText
-        //charArrayList
+        java.text.DecimalFormat df=new java.text.DecimalFormat("0.0000");
+
         String result="";
         for(charElement acharArrayList : charArrayList)
         {
-            result+=acharArrayList.code +"\t->\t"  + acharArrayList.value + "\n";
+            result+=acharArrayList.code +"\t->\t"  + acharArrayList.value + "\t(" + df.format((double)acharArrayList.value/(double)lettersNumber) +") \n";
         }
+        result+="\n H(X) =" + calcEntropy();
         resultText.setText(result);
-
 
     }
 
@@ -163,6 +175,8 @@ public class Entropia extends Application {
         try
         {
             String text = textField.getText();
+            lettersNumber = text.length();
+            System.out.println(lettersNumber);
 
             if(charArrayList.isEmpty())
             {
@@ -188,7 +202,7 @@ public class Entropia extends Application {
             }
 
 
-            Collections.sort(charArrayList, new SortByValue());
+            charArrayList.sort(new SortByValue());
 
             for (charElement aCharArrayList : charArrayList) {
                 System.out.println(aCharArrayList.code + " -> " + aCharArrayList.value);

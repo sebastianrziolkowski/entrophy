@@ -3,6 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="5ea0ec27-8ca8-427f-9a0b-13d48fa240df" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/entrophy/Entropia$ActionButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/entrophy/Entropia$ActionButtonListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/entrophy/Entropia$SingleFcButtonListener.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/entrophy/Entropia$SingleFcButtonListener.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/entrophy/Entropia$SortByValue.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/entrophy/Entropia$SortByValue.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/entrophy/Entropia$charElement.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/entrophy/Entropia$charElement.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/entrophy/Entropia.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/entrophy/Entropia.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entropia.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entropia.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -25,12 +30,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="2922" />
+          <entry key="java" value="3294" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="2922" />
+          <entry key="JAVA" value="3294" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -50,13 +55,15 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Entropia.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="334">
-              <caret line="83" column="48" lean-forward="true" selection-start-line="83" selection-start-column="48" selection-end-line="83" selection-end-column="48" />
+            <state relative-caret-position="136">
+              <caret line="62" column="36" lean-forward="true" selection-start-line="62" selection-start-column="36" selection-end-line="62" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1127#1128#0" expanded="true" />
                 <element signature="e#1181#1182#0" expanded="true" />
                 <element signature="e#1152#1165#0" expanded="true" />
+                <element signature="e#3802#3803#0" expanded="true" />
+                <element signature="e#3850#3851#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -85,6 +92,8 @@
       <find>resu</find>
       <find>setOnAction</find>
       <find>-&gt;</find>
+      <find>arr</find>
+      <find>.value</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -125,7 +134,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1540584952565" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1540588208268" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
   </component>
@@ -243,13 +252,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Entropia.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="334">
-          <caret line="83" column="48" lean-forward="true" selection-start-line="83" selection-start-column="48" selection-end-line="83" selection-end-column="48" />
+        <state relative-caret-position="136">
+          <caret line="62" column="36" lean-forward="true" selection-start-line="62" selection-start-column="36" selection-end-line="62" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1127#1128#0" expanded="true" />
             <element signature="e#1181#1182#0" expanded="true" />
             <element signature="e#1152#1165#0" expanded="true" />
+            <element signature="e#3802#3803#0" expanded="true" />
+            <element signature="e#3850#3851#0" expanded="true" />
           </folding>
         </state>
       </provider>
