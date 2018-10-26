@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.stream.Collectors;
 
 
 public class Entropia extends Application {
@@ -24,7 +25,7 @@ public class Entropia extends Application {
             int value=0;
             char code;
 
-            public charElement(int i, char Code) {
+            charElement(int i, char Code) {
                value=i;
                code=Code;
             }
@@ -39,26 +40,25 @@ public class Entropia extends Application {
         }
 
     private ScrollPane scrollPane = new ScrollPane();
-    private ArrayList<charElement> charArrayList = new ArrayList<charElement>();
+    private ArrayList<charElement> charArrayList = new ArrayList<>();
     private Text resultText = new Text("Result:");
     private Text actionStatus;
     private TextField textField;
-    private int lettersNumber =0;
+    private static int lettersNumber =0;
 
     public static void main(String[] args) {
 
         Application.launch(args);
 
 
-        if (args.length == 0) {
+        if (args.length == 0 && lettersNumber==0) {
             System.out.println("Nie podano pliku do odczytu!");
-            return;
         }
 
     }
 
     public void start(Stage primaryStage) {
-        Button open = new Button("Open");
+        Button open = new Button("Open file");
         Button load = new Button("Analyze");
         textField = new TextField();
         textField.setText("Type here!");
@@ -127,7 +127,7 @@ public class Entropia extends Application {
                 textField.setText("");
                 while(bufor.ready())
                 {
-                    textField.setText(textField.getText() + "\t" + bufor.readLine());
+                    textField.setText(textField.getText() +bufor.lines().collect(Collectors.joining()));
                 }
             } catch (Exception e) {
                 System.out.println("Error file load" + e.toString());
@@ -176,7 +176,7 @@ public class Entropia extends Application {
         {
             String text = textField.getText();
             lettersNumber = text.length();
-            System.out.println(lettersNumber);
+            //System.out.println(lettersNumber);
 
             if(charArrayList.isEmpty())
             {
@@ -204,15 +204,17 @@ public class Entropia extends Application {
 
             charArrayList.sort(new SortByValue());
 
+            /*
             for (charElement aCharArrayList : charArrayList) {
                 System.out.println(aCharArrayList.code + " -> " + aCharArrayList.value);
             }
+            */
 
 
         }
         catch (Exception e)
         {
-            System.out.println("Get text from edytor error" + e.toString());
+            System.out.println("Text error. " + e.toString());
         }
     }
 
