@@ -1,9 +1,13 @@
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -12,10 +16,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -27,15 +29,10 @@ public class Entropia extends Application {
             int value=0;
             char code;
 
-
-
             public charElement(int i, char Code) {
                value=i;
                code=Code;
             }
-
-
-
         }
 
 
@@ -46,12 +43,11 @@ public class Entropia extends Application {
             }
         }
 
-
+    ScrollPane scrollPane = new ScrollPane();
+    ArrayList<charElement> charArrayList = new ArrayList<charElement>();
+    private Text resultText = new Text("Result:");
     private Text actionStatus;
-    private Text resultText;
-    private Stage savedStage;
-    public String fileName;
-    private TextField textEdytor;
+    private TextField textField;
 
     public static void main(String[] args) {
 
@@ -63,40 +59,40 @@ public class Entropia extends Application {
             return;
         }
 
-
-       // fileName = args[0];
-
-       // System.out.println("Wczytano plik " + fileName);
-
-
-
-
     }
 
     public void start(Stage primaryStage) {
         Button open = new Button("open");
         Button load = new Button("load");
-        textEdytor = new TextField();
-        textEdytor.setMinSize(500,25);
+        textField = new TextField();
+        textField.setText("Type here!");
+        textField.setMinSize(500,25);
 
-        open.setOnAction(new SingleFcButtonListener());
-        load.setOnAction(new ActionButtonListener());
+
 
         HBox textBox = new HBox(10);
         HBox buttonBox = new HBox(10);
         buttonBox.getChildren().addAll(open,load);
-        textBox.getChildren().addAll(textEdytor);
+        textBox.getChildren().addAll(textField);
 
         actionStatus = new Text();
-        resultText = new Text("Result:");
+
 
 
         VBox vbox = new VBox(30);
-        vbox.getChildren().addAll( buttonBox, textBox,  actionStatus, resultText);
-        Scene scene = new Scene(vbox, 500, 300);
+        vbox.getChildren().addAll( buttonBox, textBox,  actionStatus,  scrollPane);
+        Scene scene = new Scene(vbox, 545, 300);
+        primaryStage.setTitle("Entropy calculator");
         primaryStage.setScene(scene);
         primaryStage.show();
-        savedStage = primaryStage;
+
+        open.setOnAction(new SingleFcButtonListener());
+        load.setOnAction(new ActionButtonListener());
+
+        scrollPane.setMaxWidth(250);
+        scrollPane.setMinHeight(150);
+        scrollPane.setContent(resultText);
+
     }
 
     private class SingleFcButtonListener implements EventHandler<ActionEvent> {
@@ -115,6 +111,8 @@ public class Entropia extends Application {
         public void handle(ActionEvent e) {
 
             countChar();
+            showResult();
+
         }
     }
 
@@ -125,14 +123,14 @@ public class Entropia extends Application {
         File selectedFile = fileChooser.showOpenDialog(null);
 
         if (selectedFile != null) {
-            fileName=selectedFile.getPath();
-            actionStatus.setText("File selected: " + fileName );
+            String fileName = selectedFile.getPath();
+            actionStatus.setText("File selected: " + fileName);
             try {
                 BufferedReader bufor = new BufferedReader(new FileReader(fileName));
 
                 while(bufor.ready())
                 {
-                    textEdytor.setText(textEdytor.getText() + bufor.readLine());
+                    textField.setText(textField.getText() + bufor.readLine());
                 }
             } catch (Exception e) {
                 System.out.println("Error file load" + e.toString());
@@ -143,13 +141,28 @@ public class Entropia extends Application {
 
     }
 
+
+    private void showResult()
+    {
+        //resultText
+        //charArrayList
+        String result="";
+        for(charElement acharArrayList : charArrayList)
+        {
+            result+=acharArrayList.code +"\t->\t"  + acharArrayList.value + "\n";
+        }
+        resultText.setText(result);
+
+
+    }
+
     private void countChar()
     {
+        charArrayList.clear();
         boolean check = false;
-        ArrayList<charElement> charArrayList = new ArrayList<charElement>();
         try
         {
-            String text = textEdytor.getText();
+            String text = textField.getText();
 
             if(charArrayList.isEmpty())
             {
@@ -161,15 +174,13 @@ public class Entropia extends Application {
                 for(int i=1;i<text.length();i++)
                 {
                     check=false;
-                   for(int j=0;j<charArrayList.size();j++)
-                   {
-                       if((int)charArrayList.get(j).code==(int)text.charAt(i))
-                       {
-                           check = true;
-                           charArrayList.get(j).value++;
-                       }
-                   }
-                   if(check==false)
+                    for (charElement aCharArrayList : charArrayList) {
+                        if ((int) aCharArrayList.code == (int) text.charAt(i)) {
+                            check = true;
+                            aCharArrayList.value++;
+                        }
+                    }
+                   if(!check)
                    {
                        charArrayList.add(new charElement(1,text.charAt(i)));
                    }
@@ -179,9 +190,8 @@ public class Entropia extends Application {
 
             Collections.sort(charArrayList, new SortByValue());
 
-            for(int i=0;i<charArrayList.size();i++)
-            {
-                System.out.println(charArrayList.get(i).code + " -> " + charArrayList.get(i).value);
+            for (charElement aCharArrayList : charArrayList) {
+                System.out.println(aCharArrayList.code + " -> " + aCharArrayList.value);
             }
 
 
